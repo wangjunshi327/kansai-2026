@@ -11,6 +11,14 @@ export interface KansaiPlace {
   summary: string
   tips?: string
   website?: string
+  image?: string
+  imageAlt?: string
+}
+
+export interface ActionCard {
+  eyebrow: string
+  chinese: string
+  japanese: string
 }
 
 export interface ItineraryItem {
@@ -22,6 +30,9 @@ export interface ItineraryItem {
   placeId?: string
   kind: '交通' | '景点' | '用餐' | '住宿' | '自由活动'
   note?: string
+  badge?: string
+  showImage?: boolean
+  actionCard?: ActionCard
 }
 
 export interface DecisionRoute {
@@ -58,7 +69,7 @@ export interface Booking {
   endTime?: string
   location: string
   reference?: string
-  status: '已确认' | '待确认'
+  status: '已确认' | '已预订' | '待确认'
   note?: string
 }
 

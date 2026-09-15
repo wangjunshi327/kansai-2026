@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { NavLink, Navigate, Route, Routes } from 'react-router'
-import { AlertTriangle, CalendarDays, ChevronDown, Clock3, Compass, Info, Map, MapPin, Search, Soup, Ticket, TrainFront } from 'lucide-react'
+import { AlertTriangle, CalendarDays, Check, ChevronDown, Clipboard, Clock3, Compass, Info, Map, MapPin, Search, Soup, Ticket, TrainFront } from 'lucide-react'
 import { CircleMarker, MapContainer, Polyline, Popup, TileLayer, useMap } from 'react-leaflet'
 import { bookings, days, decisionRoutes, guide, itinerary, placeById, places, reminders, trip } from './data/kansai2026'
 import type { Booking, ItineraryItem, KansaiPlace, TripDay, TripReminder } from './data/types'
@@ -91,12 +91,42 @@ function TodayPage() {
 }
 
 function Timeline({ items }: { items: ItineraryItem[] }) {
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const copyJapanese = async (item: ItineraryItem) => {
+    if (!item.actionCard) return
+    try {
+      await navigator.clipboard.writeText(item.actionCard.japanese)
+    } catch {
+      const textarea = document.createElement('textarea')
+      textarea.value = item.actionCard.japanese
+      textarea.style.position = 'fixed'
+      textarea.style.opacity = '0'
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      textarea.remove()
+    }
+    setCopiedId(item.id)
+    window.setTimeout(() => setCopiedId(current => current === item.id ? null : current), 1800)
+  }
   return <div className="timeline">{items.map((item, index) => {
     const place = item.placeId ? placeById.get(item.placeId) : undefined
     return <article className="timeline-row" key={item.id}>
       <div className="timeline-time">{item.time}</div>
       <div className="timeline-track"><i />{index < items.length - 1 && <span />}</div>
-      <div className="timeline-card"><div className="tag">{item.kind}</div><h3>{item.title}</h3>{place && <p><MapPin size={15} />{place.address}</p>}{item.note && <p>{item.note}</p>}</div>
+      <div className={`timeline-card${item.actionCard ? ' action-timeline-card' : ''}`}>
+        <div className="timeline-labels"><span className="tag">{item.kind}</span>{item.badge && <span className="task-badge">{item.badge}</span>}</div>
+        <h3>{item.title}</h3>
+        {place && <p><MapPin size={15} />{place.address}</p>}
+        {item.note && <p>{item.note}</p>}
+        {item.showImage && place?.image && <figure className="timeline-photo"><img src={place.image} alt={place.imageAlt ?? place.name} loading="lazy" decoding="async" width="1280" height="800" /></figure>}
+        {item.actionCard && <section className="action-card" aria-label={item.actionCard.eyebrow}>
+          <div className="action-card-heading"><div><span>{item.actionCard.eyebrow}</span><strong>给神户酒店礼宾部看</strong></div><button type="button" onClick={() => copyJapanese(item)} aria-live="polite">{copiedId === item.id ? <Check size={16} /> : <Clipboard size={16} />}{copiedId === item.id ? '已复制' : '复制日文'}</button></div>
+          <p className="action-summary">{item.actionCard.chinese}</p>
+          <pre lang="ja">{item.actionCard.japanese}</pre>
+          <small>寄件单上的预订姓名请从私人预订凭证中填写；网页不保存姓名或预订号。</small>
+        </section>}
+      </div>
     </article>
   })}</div>
 }
@@ -165,7 +195,7 @@ function MapPage() {
 
 function BookingCard({ booking }: { booking: Booking }) {
   const Icon = booking.type === '航班' || booking.type === '列车' || booking.type === '巴士' ? TrainFront : Ticket
-  return <article className="booking-card"><div className="booking-icon"><Icon size={21} /></div><div><div className="booking-top"><span>{booking.type}</span><i className={booking.status === '已确认' ? 'confirmed' : ''}>{booking.status}</i></div><h3>{booking.title}</h3><p>{formatDate(booking.date)} · {booking.time}</p><p>{booking.location}</p>{booking.reference && <p>班次：{booking.reference}</p>}{booking.note && <small>{booking.note}</small>}</div></article>
+  return <article className="booking-card"><div className="booking-icon"><Icon size={21} /></div><div><div className="booking-top"><span>{booking.type}</span><i className={booking.status !== '待确认' ? 'confirmed' : ''}>{booking.status}</i></div><h3>{booking.title}</h3><p>{formatDate(booking.date)} · {booking.time}</p><p>{booking.location}</p>{booking.reference && <p>班次：{booking.reference}</p>}{booking.note && <small>{booking.note}</small>}</div></article>
 }
 
 function BookingsPage() {
