@@ -8,6 +8,7 @@ import { rtlTextAlias } from './rtlTextAlias.js';
 // up in each chunk. The plain build only reports chunk sizes, which tells you a chunk
 // is too big but not which dependency made it so.
 export default defineConfig(({ mode }) => ({
+  base: mode === 'development' ? '/' : '/kansai-2026/',
   plugins: [
     react(),
     mode === 'analyze' &&
@@ -212,14 +213,15 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       manifest: {
-        name: 'TREK \u2014 Travel Planner',
-        short_name: 'TREK',
-        description: 'Travel Resource & Exploration Kit',
-        theme_color: '#111827',
-        background_color: '#0f172a',
+        name: 'Kansai 2026 · 关西家庭旅行',
+        short_name: 'Kansai 2026',
+        description: '神户、有马温泉与大阪家庭旅行指南',
+        theme_color: '#23312d',
+        background_color: '#f4efe7',
+        lang: 'zh-CN',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: mode === 'development' ? '/' : '/kansai-2026/',
+        start_url: mode === 'development' ? '/#/today' : '/kansai-2026/#/today',
         categories: ['travel', 'navigation'],
         icons: [
           { src: 'icons/apple-touch-icon-180x180.png', sizes: '180x180', type: 'image/png' },
