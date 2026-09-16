@@ -50,7 +50,7 @@ export const itinerary: ItineraryItem[] = [
   { id: 'd1-2d', dayId: 'd1', time: '随后', title: 'KIX 前往神户美利坚公园', placeId: 'kix', kind: '交通' },
   { id: 'd1-3', dayId: 'd1', time: '15:00', title: '酒店入住、房间休息', placeId: 'kobe-hotel', kind: '住宿', showImage: true },
   { id: 'd1-4', dayId: 'd1', time: '下午', title: '港口轻松散步', placeId: 'meriken', kind: '景点' },
-  { id: 'd1-5', dayId: 'd1', time: '晚餐', title: 'ALL FLAGS 自助晚餐', placeId: 'all-flags', kind: '用餐', note: '已预约。' },
+  { id: 'd1-5', dayId: 'd1', time: '17:30', title: 'ALL FLAGS 自助晚餐', placeId: 'all-flags', kind: '用餐', note: '已预约，17:30 开餐。' },
   { id: 'd1-6', dayId: 'd1', time: '晚上', title: '美利坚公园与神户港散步', placeId: 'meriken', kind: '景点', note: '早点休息，为第二天保留体力。' },
 
   { id: 'd2-1', dayId: 'd2', time: '08:00', title: '从酒店出发，打车前往早餐', placeId: 'nishimura', kind: '交通' },
@@ -137,7 +137,7 @@ export const decisionRoutes: DecisionRoute[] = [
 export const bookings: Booking[] = [
   { id: 'bk0', type: '航班', title: '北京飞往关西国际机场', date: '2026-10-02', time: '08:45', location: '北京首都机场 T3 → 关西国际机场 KIX', status: '已确认', note: '有托运行李，计划 06:00 抵达首都机场；最终时刻和航站楼出发前再次核验。' },
   { id: 'bk1', type: '酒店', title: '神户美利坚公园东方大酒店', date: '2026-10-02', time: '15:00 入住', endTime: '2026-10-04', location: '神户美利坚公园', status: '已确认' },
-  { id: 'bk2', type: '餐厅', title: 'ALL FLAGS 晚餐', date: '2026-10-02', time: '晚餐', location: '神户酒店内', status: '已确认' },
+  { id: 'bk2', type: '餐厅', title: 'ALL FLAGS 晚餐', date: '2026-10-02', time: '17:30', location: '神户酒店内', status: '已确认', note: '17:30 开餐。' },
   { id: 'bk3', type: '餐厅', title: 'Kobe Plaisir 神户牛午餐', date: '2026-10-03', time: '11:30', location: '神户三宫', status: '已确认' },
   { id: 'bk4', type: '活动', title: '白鹤酒造开放日', date: '2026-10-03', time: '14:00 起', location: '白鹤酒造资料馆', status: '待确认', note: '可选路线，只有全家状态良好时前往。' },
   { id: 'bk5', type: '活动', title: '大行李寄送至大阪酒店', date: '2026-10-03', time: '19:30–20:30', location: '神户酒店前台', status: '已确认', note: '大阪酒店已确认可以提前代收两个行李箱并保管至 10 月 5 日入住；寄件单需填写私人凭证中的预订姓名和入住日期。' },
